@@ -85,11 +85,30 @@ sudo eopkg install -y \
     firefox nautilus kitty cava rofi hyprpaper playerctl \
     light waybar wl-clipboard grim slurp \
     zenity wlogout xdg-desktop-portal-hyprland hyprpolkitagent \
-    cliphist hypridle hyprlock \
+    hypridle hyprlock \
     xdg-user-dirs git unzip curl wget
 
 info "Installing development tools..."
 sudo eopkg install -c system.devel -y
+
+info "Installing Go (required to build cliphist)..."
+if ! command -v go >/dev/null 2>&1; then
+    sudo eopkg install -y golang
+else
+    ok "Go already installed."
+fi
+
+info "Building cliphist from source..."
+if command -v cliphist >/dev/null 2>&1; then
+    ok "cliphist already installed."
+else
+    TMP_CLIPHIST="$(mktemp_tracked)"
+    git clone --depth=1 https://github.com/sentriz/cliphist.git \
+        "$TMP_CLIPHIST/cliphist"
+    ( cd "$TMP_CLIPHIST/cliphist" && go build -o cliphist . )
+    sudo install -Dm755 "$TMP_CLIPHIST/cliphist/cliphist" /usr/local/bin/cliphist
+    ok "cliphist installed to /usr/local/bin."
+fi
 
 info "Installing emoji fonts..."
 sudo eopkg install -y noto-color-emoji
@@ -177,7 +196,7 @@ git clone --depth=1 https://github.com/vinceliuice/Fluent-icon-theme.git \
 ok "Icons installed."
 
 info "Applying GTK settings..."
-mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" "$HOME/.config/nwg-look"
+mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
 
 GTK_SETTINGS='[Settings]
 gtk-application-prefer-dark-theme=1
@@ -187,14 +206,6 @@ gtk-font-name=Sans 10'
 
 printf '%s\n' "$GTK_SETTINGS" > "$HOME/.config/gtk-3.0/settings.ini"
 printf '%s\n' "$GTK_SETTINGS" > "$HOME/.config/gtk-4.0/settings.ini"
-
-cat > "$HOME/.config/nwg-look/config" <<'EOF'
-[General]
-icon_theme=Fluent-dark
-gtk_theme=Adwaita-dark
-cursor_theme=Adwaita
-font=Sans 10
-EOF
 
 if command -v gsettings &> /dev/null && [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]; then
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' || true
