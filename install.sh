@@ -83,7 +83,7 @@ sudo eopkg install -y hyprland
 info "Installing base packages..."
 sudo eopkg install -y \
     firefox nautilus kitty cava rofi hyprpaper playerctl \
-    light waybar wl-clipboard grim slurp nwg-look \
+    light waybar wl-clipboard grim slurp \
     zenity wlogout xdg-desktop-portal-hyprland hyprpolkitagent \
     cliphist hypridle hyprlock \
     xdg-user-dirs git unzip curl wget
