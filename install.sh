@@ -110,8 +110,6 @@ else
     ok "cliphist installed to /usr/local/bin."
 fi
 
-info "Installing emoji fonts..."
-sudo eopkg install -y noto-color-emoji
 
 if confirm "Install and enable GDM as display manager?"; then
     info "Installing GDM..."
