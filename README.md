@@ -22,7 +22,7 @@ PipeWire is already configured by default on Solus, so there's no need to enable
 ## Installation
 
     git clone https://github.com/random57619858-user/Solus-Hypr-Dotfiles
-    cd Solus-Hypr-Dotfile
+    cd Solus-Hypr-Dotfiles
     chmod +x install.sh
     ./install.sh
 
