@@ -138,7 +138,7 @@ fi
 info "Optional components..."
 
 if confirm "Install printer support?"; then
-    sudo eopkg install -y cups cups-client avahi
+    sudo eopkg install -y cups avahi
     sudo systemctl enable --now cups avahi-daemon
     sudo usermod -aG lpadmin "$USER" 2>/dev/null || true
     ok "Printer support ready."
