@@ -26,7 +26,6 @@ PipeWire is already configured by default on Solus, so there's no need to enable
     chmod +x install.sh
     ./install.sh
 
-After a reboot, log in through GDM and you're ready to go.
 
 ## What it installs
 
